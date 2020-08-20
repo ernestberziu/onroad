@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1038248355444",
+    "firebase_url": "https://onroad-ac558.firebaseio.com",
+    "project_id": "onroad-ac558",
+    "storage_bucket": "onroad-ac558.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038248355444:android:31d6d60de22962f35e9321",
+        "android_client_info": {
+          "package_name": "com.example.onroad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038248355444-5mch5r4tn0jbkvkc9e3i36u847g4j2jd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO6lORiWcjbIcmaVL_xY53EkeUZVcQ4-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038248355444-5mch5r4tn0jbkvkc9e3i36u847g4j2jd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/buttomsearch" android:icon="@drawable/ic__search_24" android:title="Search"/>
+    <item android:id="@+id/buttomtickets" android:icon="@drawable/ic_baseline_payment_24" android:title="Tickets"/>
+    <item android:id="@+id/buttomabout" android:icon="@drawable/ic_baseline_info_24" android:title="About"/>
+</menu>

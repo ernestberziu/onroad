@@ -13,17 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onroad.DemoClass;
 import com.example.onroad.R;
+import com.example.onroad.departLines.discover;
 
 import java.util.List;
 
 public class returnAdapter extends RecyclerView.Adapter<returnAdapter.ViewHolder> {
 
     Context context;
-    com.example.onroad.departLines.discover discover;
-
-
-
-
     List<returnLines> lineslist;
 
 
@@ -68,12 +64,13 @@ public class returnAdapter extends RecyclerView.Adapter<returnAdapter.ViewHolder
                 DemoClass.returndTime=getDataAdapter1.getTimed().toString();
                 DemoClass.returnaTime=getDataAdapter1.getTimea().toString();
                 DemoClass.returnPrice=getDataAdapter1.getPrice().toString();
-                DemoClass.ringormation="Return Route Inforamtion";
+                DemoClass.ringormation="Return Route Information";
                 DemoClass.toolbarReturnprice=String.valueOf(Integer.parseInt(DemoClass.adults)*(Integer.parseInt(DemoClass.returnPrice))+(Integer.parseInt(DemoClass.childs))*((Integer.parseInt(DemoClass.returnPrice)/2)));
-                Intent episodes = new Intent(context, Return.class);
-
-                context.startActivity(episodes);
-                episodes.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent intent=new Intent(view.getContext(), Return.class);
+                view.getContext().startActivity(intent);
+                ((Return) view.getContext()).overridePendingTransition(0,0);
+                ((Return) view.getContext()).finish();
+                ((Return) view.getContext()).overridePendingTransition(0,0);
 
 
             }

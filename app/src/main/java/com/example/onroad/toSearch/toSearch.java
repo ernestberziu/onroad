@@ -29,7 +29,7 @@ public class toSearch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_search);
-        ref= FirebaseDatabase.getInstance().getReference().child("Lines");
+        ref= FirebaseDatabase.getInstance().getReference().child("Cities");
         recyclerView=(RecyclerView) findViewById(R.id.recycleviewtosearch);
         searchView=(EditText) findViewById(R.id.tosearch);
     }

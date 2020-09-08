@@ -12,6 +12,4 @@
         android:title="Account"
         app:showAsAction="ifRoom"/>
 
-
-
 </menu>

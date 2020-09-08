@@ -3,6 +3,7 @@ package com.example.onroad.departLines;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,31 +11,47 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.onroad.Background;
 import com.example.onroad.DemoClass;
 import com.example.onroad.MainActivity;
 import com.example.onroad.R;
-import com.example.onroad.Routes;
+import com.example.onroad.Routes.Routes;
 import com.example.onroad.returnLines.Return;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 
-
 public class discover extends AppCompatActivity {
+
 
     int month;
     int year;
@@ -42,15 +59,17 @@ public class discover extends AppCompatActivity {
     DatabaseReference ref;
     TextView adults,childs,tolbarprice;
     String selected;
-    List<Lines> linesList;
+    List<lines> linesList;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager recyclerViewlayoutManager;
     RecyclerView.Adapter recyclerViewadapter;
-    ArrayList<String> lineslist;
+    ArrayList<String> lineslist1;
     String selectedDate;
     String totalprice;
     MainActivity main = new MainActivity();
     Button tolbarnext;
+    String url="https://onroaduniversal.000webhostapp.com/onroad/login.php?date=";
+    CardView cardView;
 
 
 
@@ -59,10 +78,6 @@ public class discover extends AppCompatActivity {
 
 
 
-    //a list to store all the products
-
-
-    //the recyclerview
 
 
 
@@ -74,16 +89,33 @@ public class discover extends AppCompatActivity {
         setContentView(R.layout.activity_discover);
 
 
-
+        childs=findViewById(R.id.childs);
+        childs.setText(DemoClass.childs);
+        adults=findViewById(R.id.adults);
+        adults.setText(DemoClass.adults);
         linesList = new ArrayList<>();
-        ref= FirebaseDatabase.getInstance().getReference().child("");
-        recyclerView = (RecyclerView) findViewById(R.id.recycler1);
-
-
-
         tolbarprice = findViewById(R.id.tolbarprice);
         tolbarprice.setText(DemoClass.toolbarprice.toString());
         tolbarnext=findViewById(R.id.tolbarnext);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbardiscover);
+        Toolbar tolbar1 =(Toolbar) findViewById(R.id.toolbarnext);
+        recyclerView=findViewById(R.id.recycler1);
+
+
+
+
+        ref= FirebaseDatabase.getInstance().getReference().child("");
+        recyclerView.setHasFixedSize(true);
+        recyclerViewlayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(recyclerViewlayoutManager);
+
+
+
+
+
+
+
+
         tolbarnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,23 +138,11 @@ public class discover extends AppCompatActivity {
 
 
 
-        childs=findViewById(R.id.childs);
-        childs.setText(DemoClass.childs);
-        adults=findViewById(R.id.adults);
-        adults.setText(DemoClass.adults);
-        recyclerView.setHasFixedSize(true);
-        recyclerViewlayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(recyclerViewlayoutManager);
 
 
-        //search for date typed in MainActivity
-
-
-        lineslist = new ArrayList<>();
 
         //Tolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbardiscover);
-        Toolbar tolbar1 =(Toolbar) findViewById(R.id.toolbarnext);
+
         setSupportActionBar(tolbar1);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
@@ -162,7 +182,7 @@ public class discover extends AppCompatActivity {
                 .formatBottomText("MMM")
                 .showTopText(true)
                 .showBottomText(true)
-                .textColor(Color.BLACK, Color.WHITE)
+                .textColor(Color.BLACK, Color.BLACK)
                 .end()
                 .defaultSelectedDate(defaultSelectedDate)
                 .build();
@@ -181,8 +201,21 @@ public class discover extends AppCompatActivity {
                 DemoClass.dyear=Integer.parseInt(parts[2]);
 
 
-                //search for date on horizontal calendar
-                getLines(DemoClass.departingdate.toString());
+
+
+//
+////////////////////////Perl fare///////////////////////////////////////////////
+//                startActivity(getIntent());
+//                overridePendingTransition( 0, 0);
+//                finish();
+//                overridePendingTransition( 0, 0);
+///////////////////////////////////////////////////////////////////////////////
+
+                getData(DemoClass.departingdate.toString().trim());
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerViewadapter = new RecyclerViewCardViewAdapter(linesList,getApplicationContext());
+                recyclerView.setAdapter(recyclerViewadapter);
+
 
 
             }
@@ -192,7 +225,13 @@ public class discover extends AppCompatActivity {
         setTotalprice(DemoClass.toolbarprice.toString());
         tolbarprice.setText(getTotalprice().toString());
         setSelectedDate(DemoClass.departingdate.toString());
-        getLines(getSelectedDate().toString());
+
+        getData(getSelectedDate().toString().trim());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerViewadapter = new RecyclerViewCardViewAdapter(linesList,getApplicationContext());
+        recyclerView.setAdapter(recyclerViewadapter);
+
+
 
 
 
@@ -201,34 +240,6 @@ public class discover extends AppCompatActivity {
 
 }
 
-//get lines list with our requirements
-public void getLines(String date){
-    linesList = new ArrayList<Lines>();
-    ref = FirebaseDatabase.getInstance().getReference().child("Lines").child((DemoClass.Cityd).toString()).child((DemoClass.Citya).toString()).child((date).toString());
-//        ref1= ref.child(DemoClass.Cityd);
-
-    ref.addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                Lines s = dataSnapshot1.getValue(Lines.class);
-                linesList.add(s);
-            }
-
-            recyclerViewadapter =new RecyclerViewCardViewAdapter(linesList, discover.this);
-            recyclerView.setAdapter(recyclerViewadapter);
-
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-            Toast.makeText(discover.this, "Error",Toast.LENGTH_SHORT).show();
-        }
-
-    });
-}
     @Override
     public void onBackPressed() {
         DemoClass.Cityd="";
@@ -241,13 +252,86 @@ public void getLines(String date){
 
     }
 
+    private void getData(String date) {
+
+        linesList=new ArrayList<lines>();
+
+
+
+        String url1 = url + date+"&cityd="+DemoClass.Cityd+"&citya="+DemoClass.Citya;
+
+
+
+        StringRequest stringRequest = new StringRequest(url1, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                showJSON(response);
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(discover.this, error.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
+
+    private void showJSON(String response) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray result = jsonObject.getJSONArray("result");
+
+
+            for (int i = 0; i < result.length(); i++) {
+                JSONObject jo = result.getJSONObject(i);
+                lines line = new lines();
+                line.setCityd(jo.getString("cityd"));
+                line.setCitya(jo.getString("citya"));
+                line.setTimed(jo.getString("timed"));
+                line.setTimea(jo.getString("timea"));
+                line.setPrice(jo.getString("price"));
+
+
+                linesList.add(line);
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerViewadapter = new RecyclerViewCardViewAdapter(linesList,getApplicationContext());
+                recyclerView.setAdapter(recyclerViewadapter);
+
+    }
 
 
 
 
 
 
-                                // getter and setter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // getter and setter
     public int getMonth() {
         return month;
     }

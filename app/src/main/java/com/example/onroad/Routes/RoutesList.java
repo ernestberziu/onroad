@@ -1,39 +1,33 @@
-package com.example.onroad.departLines;
-
-import android.widget.Button;
-
-public class Lines {
+package com.example.onroad.Routes;
 
 
 
-
+public class RoutesList {
     String cityd;
     String citya;
     String timed;
     String timea;
     String price;
+    String information;
+    String date;
 
-    Button button;
 
-    public Lines() {
+
+    public RoutesList() {
     }
 
-    public Lines(String cityd, String citya, String timed, String timea, String price) {
+    public RoutesList(String cityd, String citya, String timed, String timea, String price, String information,String date) {
         this.cityd = cityd;
         this.citya = citya;
         this.timed = timed;
         this.timea = timea;
         this.price = price;
+        this.information=information;
+        this.date=date;
 
     }
 
-    public Button getButton() {
-        return button;
-    }
 
-    public void setButton(Button button) {
-        this.button = button;
-    }
 
     public String getCityd() {
         return cityd;
@@ -75,6 +69,19 @@ public class Lines {
         this.price = price;
     }
 
+    public String getInformation() {
+        return information;
+    }
 
+    public void setInformation(String information) {
+        this.information = information;
+    }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

@@ -1,35 +1,23 @@
-package com.example.onroad;
+package com.example.onroad.Routes;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.onroad.DemoClass;
 import com.example.onroad.MainActivity;
 import com.example.onroad.R;
-import com.example.onroad.returnLines.Return;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
-
 
 
 public class Routes extends AppCompatActivity {
@@ -44,7 +32,6 @@ public class Routes extends AppCompatActivity {
     RecyclerView recyclerView2;
     RecyclerView.LayoutManager recyclerViewlayoutManager;
     RecyclerView.Adapter recyclerViewadapter;
-    ArrayList<String> lineslist;
     String selectedDate;
     String totalprice;
     MainActivity main = new MainActivity();

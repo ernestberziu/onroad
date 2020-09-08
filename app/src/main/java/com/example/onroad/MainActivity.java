@@ -17,7 +17,12 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.example.onroad.loginandregister.Register;
 import com.example.onroad.toSearch.toSearch;
+import com.example.onroad.viewLinesAgency.viewaAgencyLines;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.joda.time.DateTime;
 
@@ -37,11 +42,13 @@ public class MainActivity extends AppCompatActivity {
     Button main_to;
     Button adultsFrom;
     Button childsFrom;
+    FirebaseAuth auth;
     int dday;
     int dmonth;
     int dyear;
 
     DateTime departDate;
+    DatabaseReference ref;
 
 
 
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ref= FirebaseDatabase.getInstance().getReference().child("");
         main_from= (Button) (findViewById(R.id.main_from));
         main_to= (Button) (findViewById(R.id.main_to));
         imageButton = (ImageButton) (findViewById(R.id.searchbutton));
@@ -58,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         main_from.setText(DemoClass.Cityd);
         main_to.setText(DemoClass.Citya);
         DemoClass.returningdate="";
+        auth=FirebaseAuth.getInstance();
+
+
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 DemoClass.ryear=0;
             }
         });
+
+
         main_from.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                         DemoClass.toolbarprice="0";
+
+
                         Intent discover = new Intent(MainActivity.this, com.example.onroad.departLines.discover.class);
                         startActivity(discover);
                         finish();
@@ -189,6 +204,8 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+        toolbar.setOverflowIcon(getDrawable(R.drawable.ic_baseline_menu_24));
+
         departingDate = findViewById(R.id.main_departing);
         returnDate = findViewById(R.id.return_main);
         Calendar calendar = Calendar.getInstance();
@@ -279,26 +296,51 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        if(auth.getCurrentUser()!=null){
+
+            if(DemoClass.agencyState==1){
+                getMenuInflater().inflate(R.menu.agency_menu, menu);
+
+            }else {
+                getMenuInflater().inflate(R.menu.logout_menu, menu);
+            }
+        }
+        else{
+            getMenuInflater().inflate(R.menu.main_menu, menu);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.account) {
-            Toast.makeText(getApplicationContext(), "Account", Toast.LENGTH_LONG).show();
-            return true;
+        int menuid = item.getItemId();
 
+        if (menuid == R.id.account) {
+                Intent discover = new Intent(MainActivity.this, Register.class);
+                startActivity(discover);
+                finish();
+            }
+        if(menuid==R.id.logout){
+                FirebaseAuth.getInstance().signOut();
+            Intent discover = new Intent(MainActivity.this, MainActivity.class);
+            finish();
+            startActivity(discover);
+
+
+
+        }if(menuid==R.id.viewLines){
+            Intent discover = new Intent(MainActivity.this, viewaAgencyLines.class);
+            startActivity(discover);
 
         }
-        return super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
 
-    }
-
+        }
 
 
 

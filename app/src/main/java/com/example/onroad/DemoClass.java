@@ -1,5 +1,7 @@
 package com.example.onroad;
 
+import org.json.JSONArray;
+
 public class DemoClass {
     public static int dday;
     public static int dmont;
@@ -49,6 +51,21 @@ public class DemoClass {
     //states route click
     public static int departstate=0;
     public static int returnstate=0;
+
+
+    //Registerclass
+    public static String birthdate;
+
+    //agency
+    public static int agencyState=0;
+
+    //addLine
+    public static String addCityd;
+    public static String addCitya;
+    public static String selectedDate;
+    public static String a;
+
+    public static int selectedColor;
 
 
 

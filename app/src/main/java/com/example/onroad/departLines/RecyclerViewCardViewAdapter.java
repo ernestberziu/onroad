@@ -16,18 +16,12 @@ import com.example.onroad.R;
 
 import java.util.List;
 
-public class RecyclerViewCardViewAdapter extends RecyclerView.Adapter<RecyclerViewCardViewAdapter.ViewHolder> {
-
+public class RecyclerViewCardViewAdapter extends  RecyclerView.Adapter<RecyclerViewCardViewAdapter.ViewHolder>{
     Context context;
-    discover discover;
+    List<lines> lineslist;
 
 
-
-
-    List<Lines> lineslist;
-
-
-    public RecyclerViewCardViewAdapter(List<Lines> getDataAdapter, Context context){
+    public RecyclerViewCardViewAdapter(List<lines> getDataAdapter, Context context){
 
         this.lineslist = getDataAdapter;
 
@@ -49,7 +43,7 @@ public class RecyclerViewCardViewAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        Lines getDataAdapter1 =  lineslist.get(position);
+        lines getDataAdapter1 =  lineslist.get(position);
 
         holder.cityd.setText(getDataAdapter1.getCityd());
         holder.citya.setText(getDataAdapter1.getCitya());
@@ -57,32 +51,30 @@ public class RecyclerViewCardViewAdapter extends RecyclerView.Adapter<RecyclerVi
         holder.timea.setText(getDataAdapter1.getTimea());
         holder.price.setText(getDataAdapter1.getPrice());
 
-
-
         holder.button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 holder.button.setBackgroundColor(Color.parseColor("#f4021a"));
                 DemoClass.departstate=1;
-                DemoClass.price=getDataAdapter1.getPrice().toString();
                 DemoClass.departdCity=getDataAdapter1.getCityd().toString();
                 DemoClass.departaCity=getDataAdapter1.getCitya().toString();
                 DemoClass.departdTime=getDataAdapter1.getTimed().toString();
                 DemoClass.departaTime=getDataAdapter1.getTimea().toString();
-                DemoClass.dinformation="Depart Route Information";
+                DemoClass.price=getDataAdapter1.getPrice().toString();
+                DemoClass.dinformation="Depart Route Inforamtion";
                 DemoClass.toolbarprice=String.valueOf(Integer.parseInt(DemoClass.adults)*(Integer.parseInt(DemoClass.price))+(Integer.parseInt(DemoClass.childs))*((Integer.parseInt(DemoClass.price)/2)));
-                Intent episodes = new Intent(context, com.example.onroad.departLines.discover.class);
-
-                context.startActivity(episodes);
-                episodes.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent intent=new Intent(view.getContext(), com.example.onroad.departLines.discover.class);
+                view.getContext().startActivity(intent);
+                ((discover) view.getContext()).overridePendingTransition(0,0);
+                ((discover) view.getContext()).finish();
+                ((discover) view.getContext()).overridePendingTransition(0,0);
 
 
             }
         });
 
     }
-
     @Override
     public int getItemCount() {
 
@@ -110,11 +102,7 @@ public class RecyclerViewCardViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
 
         }
+
     }
-
-
-
-
-
 
 }

@@ -29,7 +29,7 @@ public class fromSearch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_from_search);
-        ref= FirebaseDatabase.getInstance().getReference().child("Lines");
+        ref= FirebaseDatabase.getInstance().getReference().child("Cities");
         recyclerView=(RecyclerView) findViewById(R.id.recycleviewfromrearch);
         searchView=(EditText) findViewById(R.id.fromsearch);
     }

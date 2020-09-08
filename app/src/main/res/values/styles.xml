@@ -9,6 +9,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:textColorSecondary">@color/colorAccent</item>
     </style>
+    <style name="MyCustomTheme" parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
 
 
 
